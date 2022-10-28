@@ -12,6 +12,8 @@ import java.io.*;
 */
 class NameFrame extends JFrame implements ActionListener
 {
+	
+	private  NameComponent nameComp;
 	// create swing components 
 	private JButton cancel;
 	private JButton ok;
@@ -19,7 +21,7 @@ class NameFrame extends JFrame implements ActionListener
 	
 	
 	// Controls if main() does a doSearch()
-	public static final boolean SEARCH = true;
+	public static final boolean SEARCH = false;
 	
 	// arraylist to hold Name record objects.
 	public static ArrayList <NameRecord> ivar = new ArrayList<NameRecord>();
@@ -29,9 +31,34 @@ class NameFrame extends JFrame implements ActionListener
 	
 	
 	
+	public NameFrame() {
+		setTitle("Graph");
+		setSize(600,700);
+		Container content = getContentPane( );
+		content.setLayout(new BorderLayout( ));
+		nameComp = new NameComponent();
+		content.add(nameComp, BorderLayout.CENTER);
+		nameComp.setFocusable(true);
+		nameComp.requestFocusInWindow( );
+		setVisible(true);
+		
+		// add a component listner to catch the changes of the window size.
+		nameComp.addComponentListener(new ComponentAdapter() {
+		      @Override
+		      public void componentResized(ComponentEvent e) {
+		    	  
+		    	// when resize detected, all the response resize method in name component
+		    	// passing new height and width of window.
+		        nameComp.responseResize(e.getComponent().getHeight()-100,e.getComponent().getWidth());
+		      }
+		    });
+		
+	}
+	
 	
 	
 	public static void main(String[] args) throws IOException {
+		
 		NameFrame frame = new NameFrame();
 		frame.read("names-data.txt");
 		
